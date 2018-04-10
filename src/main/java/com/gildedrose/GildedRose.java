@@ -37,6 +37,11 @@ class GildedRose {
                 continue;
             }
 
+            if(items[i].name.equals(SULFURAS)){
+                continue;
+            }
+
+
 
             if (!items[i].name.equals(AGED_BRIE)
                     && !items[i].name.equals(BACKSTAGE_TICKETS)) {
