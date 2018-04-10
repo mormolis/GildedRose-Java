@@ -34,6 +34,7 @@ public class GildedRoseTest {
     private final int AGED_BRIE1 = 2;
     private final int SULFURAS = 3;
     private final int BACKSTAGE_PASSES = 4;
+    private final int BACKSTAGE_PASSES2 = 5;
 
 
 
@@ -48,7 +49,8 @@ public class GildedRoseTest {
                                 new Item("Fatakia", 5, 10),
                                 new Item("Aged Brie", 10, 10),
                                 new Item("Sulfuras, Hand of Ragnaros", 10, 10),
-                                new Item("Backstage passes to a TAFKAL80ETC concert", 20, 10)};
+                                new Item("Backstage passes to a TAFKAL80ETC concert", 20, 10),
+                                new Item("Backstage passes to a TAFKAL80ETC concert", 20, 49)};
         gildedRose = new GildedRose(items);
     }
 
@@ -187,9 +189,14 @@ public class GildedRoseTest {
     @Test
     public void backstage_increasesQuality5Days(){
 
-        for(int i=0; i<15; i++){
+        for(int i=0; i<14; i++){
             gildedRose.updateQuality();
         }
+        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 28);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 6);
+
+        gildedRose.updateQuality();
+
         Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 30);
         Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 5);
 
@@ -200,6 +207,16 @@ public class GildedRoseTest {
         gildedRose.updateQuality();
         Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 36);
         Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 3);
+    }
+
+    @Test
+    public void backstage_qualityDoesNotIncreaseMoreThan50(){
+        for(int i = 0; i < 10; i++){
+            gildedRose.updateQuality();
+        }
+
+        Assert.assertTrue(items[BACKSTAGE_PASSES2].quality == 50);
+        Assert.assertTrue(items[BACKSTAGE_PASSES2].sellIn == 10);
     }
 
     @Test
