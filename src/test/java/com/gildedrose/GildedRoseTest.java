@@ -52,7 +52,8 @@ public class GildedRoseTest {
                                 new AgedBrie( 10, 10),
                                 new Sulfuras(),
                                 new BackstagePasses( 20, 10),
-                                /* new BackstagePasses( 20, 49) */};
+                                new BackstagePasses( 20, 49) ,
+                                new Conjured(10,100)};
         gildedRose = new GildedRose(items);
     }
 
@@ -231,7 +232,6 @@ public class GildedRoseTest {
 
         gildedRose.updateQuality();
         Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == -1);
-        System.out.println( items[BACKSTAGE_PASSES].getSellIn() + "    ----    " + items[BACKSTAGE_PASSES].getQuality());
         Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 0);
 
         gildedRose.updateQuality();
@@ -240,7 +240,6 @@ public class GildedRoseTest {
     }
 
     @Test
-    @Ignore
     public void conjured_qualityDegradesTwiceAsFastAsTheCommonItem(){
 
         gildedRose.updateQuality();
