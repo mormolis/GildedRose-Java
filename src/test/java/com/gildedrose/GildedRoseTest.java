@@ -40,17 +40,17 @@ public class GildedRoseTest {
 
 
 
-    private Item[] items;
+    private Sellable[] items;
     private GildedRose gildedRose;
 
     @Before
     public void init(){
-        items =  new Item[] {   new Item("Kakakia", 10, 10),
-                                new Item("Fatakia", 5, 10),
-                                new Item("Aged Brie", 10, 10),
-                                new Item("Sulfuras, Hand of Ragnaros", 10, 10),
-                                new Item("Backstage passes to a TAFKAL80ETC concert", 20, 10),
-                                new Item("Backstage passes to a TAFKAL80ETC concert", 20, 49)};
+        items =  new Sellable[] {   new CommonItem("Kakakia", 10, 10),
+                                new CommonItem("Fatakia", 5, 10),
+                                new AgedBrie( 10, 10),
+                                new Sulfuras(),
+                                new BackstagePasses( 20, 10),
+                                new BackstagePasses( 20, 49)};
         gildedRose = new GildedRose(items);
     }
 
@@ -61,18 +61,18 @@ public class GildedRoseTest {
 
         gildedRose.updateQuality();
 
-        Assert.assertTrue(items[COMMON_ITEM1].quality == 9);
-        Assert.assertTrue(items[COMMON_ITEM1].sellIn == 9);
+        Assert.assertTrue(items[COMMON_ITEM1].getQuality() == 9);
+        Assert.assertTrue(items[COMMON_ITEM1].getSellIn() == 9);
 
-        Assert.assertTrue(items[COMMON_ITEM2].quality == 9);
-        Assert.assertTrue(items[COMMON_ITEM2].sellIn == 4);
+        Assert.assertTrue(items[COMMON_ITEM2].getQuality() == 9);
+        Assert.assertTrue(items[COMMON_ITEM2].getSellIn() == 4);
 
         gildedRose.updateQuality();
 
-        Assert.assertTrue(items[COMMON_ITEM1].quality == 8);
-        Assert.assertTrue(items[COMMON_ITEM1].sellIn == 8);
-        Assert.assertTrue(items[COMMON_ITEM2].quality == 8);
-        Assert.assertTrue(items[COMMON_ITEM2].sellIn == 3);
+        Assert.assertTrue(items[COMMON_ITEM1].getQuality() == 8);
+        Assert.assertTrue(items[COMMON_ITEM1].getSellIn() == 8);
+        Assert.assertTrue(items[COMMON_ITEM2].getQuality() == 8);
+        Assert.assertTrue(items[COMMON_ITEM2].getSellIn() == 3);
 
     }
 
@@ -84,11 +84,11 @@ public class GildedRoseTest {
         for(int i = 0; i < 11; i++){
             gildedRose.updateQuality();
         }
-        Assert.assertTrue(items[COMMON_ITEM1].quality == 0);
-        Assert.assertTrue(items[COMMON_ITEM1].sellIn == -1);
+        Assert.assertTrue(items[COMMON_ITEM1].getQuality() == 0);
+        Assert.assertTrue(items[COMMON_ITEM1].getSellIn() == -1);
 
-        Assert.assertTrue(items[COMMON_ITEM2].quality == 0);
-        Assert.assertTrue(items[COMMON_ITEM2].sellIn == -6);
+        Assert.assertTrue(items[COMMON_ITEM2].getQuality() == 0);
+        Assert.assertTrue(items[COMMON_ITEM2].getSellIn() == -6);
 
     }
 
@@ -99,13 +99,13 @@ public class GildedRoseTest {
             gildedRose.updateQuality();
         }
 
-        Assert.assertTrue(items[COMMON_ITEM2].quality == 5);
-        Assert.assertTrue(items[COMMON_ITEM2].sellIn == 0);
+        Assert.assertTrue(items[COMMON_ITEM2].getQuality() == 5);
+        Assert.assertTrue(items[COMMON_ITEM2].getSellIn() == 0);
 
         gildedRose.updateQuality();
 
-        Assert.assertTrue(items[COMMON_ITEM2].quality == 3);
-        Assert.assertTrue(items[COMMON_ITEM2].sellIn == -1);
+        Assert.assertTrue(items[COMMON_ITEM2].getQuality() == 3);
+        Assert.assertTrue(items[COMMON_ITEM2].getSellIn() == -1);
 
 
 
@@ -114,13 +114,13 @@ public class GildedRoseTest {
     @Test
     public void agedBrie_increasesItsQualityAsItAges(){
 
-        Assert.assertTrue(items[AGED_BRIE1].quality == 10);
-        Assert.assertTrue(items[AGED_BRIE1].sellIn == 10);
+        Assert.assertTrue(items[AGED_BRIE1].getQuality() == 10);
+        Assert.assertTrue(items[AGED_BRIE1].getSellIn() == 10);
 
         gildedRose.updateQuality();
 
-        Assert.assertTrue(items[AGED_BRIE1].quality == 11);
-        Assert.assertTrue(items[AGED_BRIE1].sellIn == 9);
+        Assert.assertTrue(items[AGED_BRIE1].getQuality() == 11);
+        Assert.assertTrue(items[AGED_BRIE1].getSellIn() == 9);
 
     }
 
@@ -132,25 +132,25 @@ public class GildedRoseTest {
             gildedRose.updateQuality();
         }
 
-        Assert.assertTrue(items[AGED_BRIE1].quality == 50);
-        Assert.assertTrue(items[AGED_BRIE1].sellIn == -30);
+        Assert.assertTrue(items[AGED_BRIE1].getQuality() == 50);
+        Assert.assertTrue(items[AGED_BRIE1].getSellIn() == -30);
 
         gildedRose.updateQuality();
 
-        Assert.assertTrue(items[AGED_BRIE1].quality == 50);
-        Assert.assertTrue(items[AGED_BRIE1].sellIn == -31);
+        Assert.assertTrue(items[AGED_BRIE1].getQuality() == 50);
+        Assert.assertTrue(items[AGED_BRIE1].getSellIn() == -31);
 
     }
 
     @Test
     public void sulfuras_isNotAffectedByTimeOrQualityDegradation(){
         gildedRose.updateQuality();
-        Assert.assertTrue(items[SULFURAS].quality == 10);
-        Assert.assertTrue(items[SULFURAS].sellIn == 10);
+        Assert.assertTrue(items[SULFURAS].getQuality() == 80);
+        Assert.assertTrue(items[SULFURAS].getSellIn() == 0);
 
         gildedRose.updateQuality();
-        Assert.assertTrue(items[SULFURAS].quality == 10);
-        Assert.assertTrue(items[SULFURAS].sellIn == 10);
+        Assert.assertTrue(items[SULFURAS].getQuality() == 80);
+        Assert.assertTrue(items[SULFURAS].getSellIn() == 0);
     }
 
     //	- "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
@@ -159,11 +159,11 @@ public class GildedRoseTest {
     @Test
     public void backstage_increasesQuality10DaysOrMore(){
         gildedRose.updateQuality();
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 11);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 19);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 11);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 19);
         gildedRose.updateQuality();
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 12);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 18);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 12);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 18);
 
     }
 
@@ -173,16 +173,16 @@ public class GildedRoseTest {
         for(int i=0; i<10; i++){
             gildedRose.updateQuality();
         }
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 20);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 10);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 20);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 10);
 
         gildedRose.updateQuality();
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 22);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 9);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 22);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 9);
 
         gildedRose.updateQuality();
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 24);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 8);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 24);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 8);
 
     }
 
@@ -192,21 +192,21 @@ public class GildedRoseTest {
         for(int i=0; i<14; i++){
             gildedRose.updateQuality();
         }
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 28);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 6);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 28);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 6);
 
         gildedRose.updateQuality();
 
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 30);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 5);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 30);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 5);
 
         gildedRose.updateQuality();
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 33);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 4);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 33);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 4);
 
         gildedRose.updateQuality();
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 36);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 3);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 36);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 3);
     }
 
     @Test
@@ -215,26 +215,22 @@ public class GildedRoseTest {
             gildedRose.updateQuality();
         }
 
-        Assert.assertTrue(items[BACKSTAGE_PASSES2].quality == 50);
-        Assert.assertTrue(items[BACKSTAGE_PASSES2].sellIn == 10);
+        Assert.assertTrue(items[BACKSTAGE_PASSES2].getQuality() == 50);
+        Assert.assertTrue(items[BACKSTAGE_PASSES2].getSellIn() == 10);
     }
 
     @Test
     public void backstage_qualityDropsTo0AfterConcert(){
-        while(items[BACKSTAGE_PASSES].sellIn > 0){
+        while(items[BACKSTAGE_PASSES].getQuality() > 0){
             gildedRose.updateQuality();
         }
 
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == 0);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 45);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == -1);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 0);
 
         gildedRose.updateQuality();
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == -1);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 0);
-
-        gildedRose.updateQuality();
-        Assert.assertTrue(items[BACKSTAGE_PASSES].sellIn == -2);
-        Assert.assertTrue(items[BACKSTAGE_PASSES].quality == 0);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == -2);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 0);
     }
 
 
