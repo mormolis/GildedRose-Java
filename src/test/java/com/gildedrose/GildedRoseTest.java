@@ -36,6 +36,7 @@ public class GildedRoseTest {
     private final int SULFURAS = 3;
     private final int BACKSTAGE_PASSES = 4;
     private final int BACKSTAGE_PASSES2 = 5;
+    private final int CONJURED = 6;
 
 
 
@@ -54,7 +55,6 @@ public class GildedRoseTest {
                                 new BackstagePasses( 20, 49)};
         gildedRose = new GildedRose(items);
     }
-
 
 
     @Test
@@ -221,13 +221,17 @@ public class GildedRoseTest {
     }
 
     @Test
-    @Ignore
     public void backstage_qualityDropsTo0AfterConcert(){
-        while(items[BACKSTAGE_PASSES].getQuality() > 0){
+        while(items[BACKSTAGE_PASSES].getSellIn() > 0){
             gildedRose.updateQuality();
         }
 
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == 0);
+        Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 45);
+
+        gildedRose.updateQuality();
         Assert.assertTrue(items[BACKSTAGE_PASSES].getSellIn() == -1);
+        System.out.println( items[BACKSTAGE_PASSES].getSellIn() + "    ----    " + items[BACKSTAGE_PASSES].getQuality());
         Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 0);
 
         gildedRose.updateQuality();
@@ -235,8 +239,28 @@ public class GildedRoseTest {
         Assert.assertTrue(items[BACKSTAGE_PASSES].getQuality() == 0);
     }
 
+    @Test
+    @Ignore
+    public void conjured_qualityDegradesTwiceAsFastAsTheCommonItem(){
 
+        gildedRose.updateQuality();
+        Assert.assertTrue(items[CONJURED].getSellIn() == 9);
+        Assert.assertTrue(items[CONJURED].getQuality() == 98);
 
+        int quality = items[CONJURED].getQuality();
+        int sellin = items[CONJURED].getSellIn();
+        while(items[CONJURED].getSellIn() > 0){
+            gildedRose.updateQuality();
+            quality -=2;
+            sellin--;
+            Assert.assertTrue(items[CONJURED].getSellIn() == sellin);
+            Assert.assertTrue(items[CONJURED].getQuality() == quality);
+        }
+
+        gildedRose.updateQuality();
+        Assert.assertTrue(items[CONJURED].getSellIn() == -1);
+        Assert.assertTrue(items[CONJURED].getQuality() == quality - 4);
+    }
 
 }
 

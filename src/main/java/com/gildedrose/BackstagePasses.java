@@ -13,13 +13,13 @@ public class BackstagePasses implements Sellable {
         if(item.sellIn >= 0 && item.quality < 50){
             if(item.sellIn <= 10 && item.sellIn > 5){
                 item.quality+=2;
-            } else if (item.sellIn <= 5 && item.sellIn >= 0){
+            } else if (item.sellIn <= 5){
                 item.quality+=3;
             } else {
                 item.quality++;
             }
         }
-        if(item.sellIn<0) item.quality = 0;
+        if(item.sellIn < 0) item.quality = 0;
     }
 
     @Override
