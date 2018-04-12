@@ -52,7 +52,7 @@ public class GildedRoseTest {
                                 new AgedBrie( 10, 10),
                                 new Sulfuras(),
                                 new BackstagePasses( 20, 10),
-                                new BackstagePasses( 20, 49)};
+                                /* new BackstagePasses( 20, 49) */};
         gildedRose = new GildedRose(items);
     }
 
